@@ -40,6 +40,7 @@ def init(dataframe,cases,conts,network):
 
 def create_graphs(data,case,cont,networkfile,caselist,contlist,genelist):
 	print('Creating Case and Control Graphs... \n')
+	genelistnet = []
 	with open(networkfile) as f:
 		for line in f:
 			node1,node2,_ = line.strip('\n').split(',')
@@ -56,9 +57,11 @@ def create_graphs(data,case,cont,networkfile,caselist,contlist,genelist):
 				cont.add_node(node2)
 				case.add_edge(node1,node2,weight=casemet)
 				cont.add_edge(node1,node2,weight=contmet)
+				genelistnet.append(node1)
+				genelistnet.append(node2)
 			else:
 				continue
-	return case,cont 
+	return case,cont,genelistnet
 
 #write out arguments of function 
 def run_wavelet_decomp(case_graph,cont_graph, genelist, shift):
@@ -117,8 +120,8 @@ def PCA_distance(embeddings,case_node_map,cont_node_map,shift):
 
 def main():
 	data,genelist,caselist,contlist,shift,case,cont = init(dataframe,cases,conts,networkfile)
-	case,cont = create_graphs(data,case,cont,networkfile,caselist,contlist,genelist)
-	TotChi,shift,case_node_map,cont_node_map = run_wavelet_decomp(case,cont,genelist,shift)
+	case,cont,genelistnet = create_graphs(data,case,cont,networkfile,caselist,contlist,genelist)
+	TotChi,shift,case_node_map,cont_node_map = run_wavelet_decomp(case,cont,genelistnet,shift)
 	distances = PCA_distance(TotChi,case_node_map,cont_node_map,shift)
 	print('EA Wavelet Analysis Complete')
 
