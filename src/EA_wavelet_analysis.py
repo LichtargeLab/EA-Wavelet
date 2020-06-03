@@ -61,6 +61,7 @@ def create_graphs(data,case,cont,networkfile,caselist,contlist,genelist):
 				genelistnet.append(node2)
 			else:
 				continue
+	genelistnet = list(set(genelistnet))
 	return case,cont,genelistnet
 
 #write out arguments of function 
