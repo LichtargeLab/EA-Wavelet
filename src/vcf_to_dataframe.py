@@ -114,7 +114,7 @@ def search_vcf(vcf,genelist,samples,masterdict,state):
 				if state == 'EA':
 					masterdict[gene][sample].append((1-(geneEA/100))**zyg)
 				elif state == 'PPh2':
-					masterdict[gene][sample].append((1-(genePPh2/100))**zyg)
+					masterdict[gene][sample].append((1-(genePPh2))**zyg) #genepph2 is not /100 because it is already normalize 0-1
 	return masterdict
 
 def make_matrix(masterdict,genelist,gene_map,samp_map,EA_matrix,samples):
