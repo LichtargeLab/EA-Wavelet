@@ -29,6 +29,8 @@ networkfile = sys.argv[5]
 def init(dataframe,cases,conts,network):
 	print('Initializing...')
 	data = pd.read_csv(dataframe,delimiter='\t',header=0,index_col=0)
+	if not isinstance(data.index[0],str):
+		data.index = data.index.astype(str)
 	genelist = data.columns.values.tolist()
 	caselist = [line.strip('\n') for line in open(cases)]
 	contlist = [line.strip('\n') for line in open(conts)]
