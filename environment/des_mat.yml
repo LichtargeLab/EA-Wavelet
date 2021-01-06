@@ -1,4 +1,4 @@
-name: vcf_preproc
+name: des_mat
 channels:
   - bioconda
   - defaults
