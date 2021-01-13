@@ -10,12 +10,12 @@ There are two main scripts of this method, vcf_to_dataframe.py and EA_wavelet_an
 		- use des_mat.yml enviornment 
 		- 7 positional arguments are required for this script:
 			- vcf file location
-			- network file location (should be csv format: node1,node2,weight)
 			- text file of case IDs (formatted with only IDs)
 			- text file of control IDs (formatted with only IDs)
 			- text file containing list of genes that appear in the VCF file
+			- reference file for version of genome build, can be found in ref folder
 			- specify metric of analysis ('EA' or 'PPh2')
-			- save path for output files
+			- number of jobs
 
 	EA_wavelet_analysis.py:
 		- use wavelet.yml enviornment
