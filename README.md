@@ -76,14 +76,14 @@ Required arguments for the EA_wavelet_analysis.py script are as follows:
 
 Usage is as follows:
 ```bash
-python EA_wavelet_analysis.py --input data.txt --cases case.txt --conts cont.txt
-                              --network network.txt --thr 0.1 --savepath ouput.txt
+python EA_wavelet_analysis.py --input /path/to/data.txt --cases /path/to/case.txt --conts /path/to/cont.txt
+                              --network /path/to/network.csv --thr 0.1 --savepath /path/to/ouput.txt
 ```
 Output from this command will be a text file of 5 columns (distance, gene, z-score, p-value, and fdr value). Only genes whose FDR value is less than the 
 requested threshold of 0.1 will be reported. If a FULL output of all genes is desired, then --full_fdr flag should be passed as follows:
 ```bash
-python EA_wavelet_analysis.py --input data.txt --cases case.txt --conts cont.txt
-                              --network network.txt --full_fdr --savepath ouput.txt
+python EA_wavelet_analysis.py --input /path/to/data.txt --cases /path/to/case.txt --conts /path/to/cont.txt
+                              --network /path/to/network.csv --full_fdr --savepath /path/to/ouput.txt
 ```
  #### Input file formats
 
