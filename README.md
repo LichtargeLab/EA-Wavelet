@@ -85,7 +85,7 @@ requested threshold of 0.1 will be reported. If a FULL output of all genes is de
 python EA_wavelet_analysis.py --input data.txt --cases case.txt --conts cont.txt
                               --network network.txt --full_fdr --savepath ouput.txt
 ```
- ####Input file formats
+ #### Input file formats
 
 - CaseID and ControlID files will be the same as from the previou step
 - Network file should be a comma separated file of 3 columns. Each row in the file 
@@ -94,7 +94,7 @@ should represent an edge. Columns will be node1, node2, edge-weight. If no edge 
     
       - x,y,1
    
-##Credits
+## Credits
 As previously stated this method uses GraphWave node embedding algorithm designed and developed by Donnat et al:
 
 - Donnat, C., Zitnik, M., Hallac, D., & Leskovec, J. (2018). Learning Structural Node Embeddings via Diffusion Wavelets. 1320–1329. https://doi.org/10.1145/3219819.3220025
