@@ -47,13 +47,13 @@ def retrieve_pph2(rec):
 
 
 def get_zygo(genotype):
-    if genotype == (0, 0):
-        zyg = 0
+    if genotype in [(1, 0), (0, 1), ('.', 1), (1, '.')]:
+        zygo = 1
     elif genotype == (1, 1):
-        zyg = 2
+        zygo = 2
     else:
-        zyg = 1
-    return zyg
+        zygo = 0
+    return zygo
 
 
 def parse_gene(vcf_file, samples_list, gene, gene_ref, state):
