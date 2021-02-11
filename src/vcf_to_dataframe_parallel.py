@@ -72,26 +72,25 @@ def parse_gene(vcf_file, samples_list, gene, gene_ref, state):
 		if isinstance(rec_gene, tuple):
 			gl = list(rec_gene)
 			rec_gene = gl[0]
-		if rec_gene != gene:
-			continue
-		if state == 'EA':
-			score = retrieve_EA(rec.info['EA'])
-			score = score / 100
-		elif state == 'PPh2':
-			if 'dbNSFP_Polyphen2_HDIV_score' not in rec.info.keys():
-				EA = rec.info['EA']
-				if EA == 'silent':
-					score = 0
-				elif EA == 'STOP':
-					score = 1
-				elif EA == 'fs-indel':
-					score = 1
-				else:
-					continue
-			score = retrieve_pph2(rec.info['dbNSFP_Polyphen2_HDIV_score'])
-		for sample in samples_list:
-			zyg = get_zygo(rec.samples[sample]['GT'])
-			temp_df.loc[sample, rec_gene] *= (1 - score) ** zyg
+		if rec_gene == gene:
+			if state == 'EA':
+				score = retrieve_EA(rec.info['EA'])
+				score = score / 100
+			elif state == 'PPh2':
+				if 'dbNSFP_Polyphen2_HDIV_score' not in rec.info.keys():
+					EA = rec.info['EA']
+					if EA == 'silent':
+						score = 0
+					elif EA == 'STOP':
+						score = 1
+					elif EA == 'fs-indel':
+						score = 1
+					else:
+						continue
+				score = retrieve_pph2(rec.info['dbNSFP_Polyphen2_HDIV_score'])
+			for sample in samples_list:
+				zyg = get_zygo(rec.samples[sample]['GT'])
+				temp_df.loc[sample, rec_gene] *= (1 - score) ** zyg
 	return temp_df
 
 
