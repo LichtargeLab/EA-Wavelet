@@ -66,8 +66,8 @@ def create_graphs(data, case, cont, networkfile, caselist, contlist, genelist):
             if node2 not in genelist:
                 continue
             if node2 != 'NOLINK':
-                casemet = np.mean(list(np.abs(data.loc[caselist, node1] - data.loc[caselist, node2])))
-                contmet = np.mean(list(np.abs(data.loc[contlist, node1] - data.loc[contlist, node2])))
+                casemet = np.mean(list(np.abs(data.loc[caselist, node1] + data.loc[caselist, node2])))
+                contmet = np.mean(list(np.abs(data.loc[contlist, node1] + data.loc[contlist, node2])))
                 case.add_node(node1)
                 case.add_node(node2)
                 cont.add_node(node1)
