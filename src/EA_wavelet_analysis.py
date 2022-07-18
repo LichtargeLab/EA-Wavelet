@@ -41,6 +41,18 @@ def parse_args():
 
 
 def init(dataframe, cases, conts):
+    '''
+    :param dataframe: dataframe file path
+    :param cases: file path for list of case identifiers
+    :param conts: file path for list of control identifiers
+    :return data: loaded dataframe of gene perturbation scores and sample IDs
+    :return genelist: list of genes that are sequenced/present in dataset
+    :return caselist: list of case identifiers
+    :return contlist: list of control identifiers
+    :return shift: empty and initialized tracker object
+    :return case: empty and initialized networkx Graph for average Case
+    :return cont: empty and initialized networkx Graph for average Control 
+    '''
     print('Initializing...')
     data = pd.read_csv(dataframe, delimiter='\t', header=0, index_col=0)
     if not isinstance(data.index[0], str):
@@ -56,6 +68,18 @@ def init(dataframe, cases, conts):
 
 
 def create_graphs(data, case, cont, networkfile, caselist, contlist, genelist):
+    '''
+    :param data: dataframe of gene perturbation scores and sample IDs
+    :param case: Empty networkx Graph for average Case
+    :param cont: Empty networkx Graph for average Cont
+    :param networkfile: filepath for network input
+    :param caselist: list of case identifiers
+    :param contlist: list of control identifiers
+    :param genelist: list of genes that are sequenced/present in dataset
+    :return case: Filled out networkx Graph of average Case
+    :return cont: Filled out networkx Graph of average Control
+    :return genelistnet: list of genes that are sequenced in the dataset and present in the network
+    '''
     print('Creating Case and Control Graphs... \n')
     genelistnet = []
     with open(networkfile) as f:
@@ -84,6 +108,16 @@ def create_graphs(data, case, cont, networkfile, caselist, contlist, genelist):
 
 # write out arguments of function
 def run_wavelet_decomp(case_graph, cont_graph, genelist, shift):
+    '''
+    :param case_graph: Filled out networkx Graph of average Case
+    :param cont_graph: Filled out networkx Graph of average Cont
+    :param genelist: list of genes that are sequenced in data and present in network
+    :param shift: empty tracker object
+    :return TotChi: Matrix of full dimensional embeddings of all genes in case and control graph
+    :return shift: value-assigned tracker object
+    :return case_node_map: dictionary of gene to index map for cases in TotChi
+    :return cont_node_map: dictionary of gene to index map for controls in TotChi
+    '''
     print('Computing embeddings...\n')
     CaseChi, CaseHeat, CaseTau = graphwave_alg(case_graph, np.linspace(0, 100, 25), taus='auto', verbose=True)
     ContChi, ContHeat, ContTau = graphwave_alg(cont_graph, np.linspace(0, 100, 25), taus='auto', verbose=True)
@@ -121,16 +155,28 @@ def run_wavelet_decomp(case_graph, cont_graph, genelist, shift):
 
 # writeout arguments of function
 def PCA_distance(embeddings, case_node_map, cont_node_map, shift):
+    '''
+    :param embeddings: full dimensional embeddings of genes in cases and controls
+    :param case_node_map: dictionary of gene to index map for cases in TotChi
+    :param cont_node_map: dictionary of gene to index map for controls in TotChi
+    :param shift: value-assigned tracker object
+    :return distances: Dataframe of PCA distances of all genes
+    '''
     pca = PCA(n_components=3)
     transdata = pca.fit_transform(StandardScaler().fit_transform(embeddings))
+
+    wx, wy, _ = pca.explained_variance_ratio_
+    wt = wx+wy
+    wx = wx/wt
+    wy = wy/wt
 
     distances = pd.DataFrame(columns=['distance', 'gene'])
     gcounter = 0
     for gene in case_node_map.keys():
         genepidx = case_node_map[gene]
         genenidx = cont_node_map[gene] + shift
-        dist = (transdata[genepidx, 0] - transdata[genenidx, 0]) ** 2 + (
-                transdata[genepidx, 0] - transdata[genenidx, 0]) ** 2
+        dist = wx*((transdata[genepidx, 0] - transdata[genenidx, 0]) ** 2) + wy*((
+                transdata[genepidx, 0] - transdata[genenidx, 0]) ** 2)
         distances.loc[gcounter, 'gene'] = gene
         distances.loc[gcounter, 'distance'] = np.sqrt(dist)
         gcounter += 1
