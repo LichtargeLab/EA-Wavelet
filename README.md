@@ -1,6 +1,6 @@
-# EAWavelet 
+# GeneEMBED 
 
-EAWavelet is a graph learning based approach to identify potential disease-gene relations using molecular network information in conjunction with patient specific mutational data. Node embedding itself is performed using 
+GeneEMBED is a graph learning based approach to identify potential disease-gene relations using molecular network information in conjunction with patient specific mutational data. Node embedding itself is performed using 
 the GraphWave algorithm pioneered by Donnat et al (https://github.com/snap-stanford/graphwave). The embedding portion of this repository is a replica of Donnat et al's repository with modifications needed to lift over from python 2 to python 3.
 
 The output is a ranked list of genes with corresponding PCA-distances, z-scores, p-values, and corresponding FDR-values
@@ -19,9 +19,9 @@ To install conda environment:
 conda env create -f EAWavelet.yml
 ```
 ## Usage 
-There are two main scripts for EAWavelet, vcf_to_dataframe_parallel.py and EA_wavelet analysis.py.
+There are two main scripts for GeneEMBED, vcf_to_dataframe_parallel.py and EA_wavelet analysis.py.
 The first of the two processes a VCF annotated with EA or PPh2 into a data matrix of patient specific p(VIS) scores.
-The second performs the actual EAWavelet analysis.
+The second performs the actual GeneEMBED analysis.
 
 Before running the pipeline, ensure activation of the virtual enviornment:
 ```bash
@@ -61,7 +61,7 @@ with only sample IDs
      
    - All additional INFO fields mus be defined in the header with type information
      
-### EA Wavelet Analysis
+### GeneEMBED Analysis
 Required arguments for the EA_wavelet_analysis.py script are as follows:
 
 | argument       | type          | description                                       |
